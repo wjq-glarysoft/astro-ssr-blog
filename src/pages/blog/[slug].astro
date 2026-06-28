@@ -1,0 +1,34 @@
+---
+import { marked } from "marked";
+import { fetchPost } from "../../lib/github";
+
+const { slug } = Astro.params;
+
+if (!slug) {
+  return new Response("Not Found", { status: 404 });
+}
+
+let md = await fetchPost(slug);
+
+try {
+  md = await fetchPost(slug);
+} catch (e) {
+  return new Response("Not Found", { status: 404 });
+}
+
+const html = marked.parse(md);
+---
+
+<html lang="zh">
+  <head>
+    <title>{slug}</title>
+    <meta name="description" content={`文章：${slug}`} />
+
+    <!-- SEO基础 -->
+    <meta property="og:title" content={slug} />
+  </head>
+
+  <body>
+    <article set:html={html} />
+  </body>
+</html>
