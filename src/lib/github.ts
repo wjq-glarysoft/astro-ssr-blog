@@ -1,5 +1,5 @@
 export async function fetchPost(slug: string) {
-  const url = `https://raw.githubusercontent.com/wjq-glarysoft/astro-blog/main/src/content/posts/${slug}.md`;
+  const url = `https://raw.githubusercontent.com/wjq-glarysoft/astro-ssr-blog/main/src/content/posts/${slug}.md`;
   const res = await fetch(url);
 
   if (!res.ok) {
