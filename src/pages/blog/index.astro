@@ -1,25 +1,48 @@
 ---
 const repo = "wjq-glarysoft/astro-ssr-blog";
 
-const res = await fetch(
-  `https://api.github.com/repos/${repo}/contents/src/content/posts`
-);
+type Post = {
+  slug: string;
+};
 
-const files: any[] = await res.json();
+let posts: Post[] = [];
 
-const posts = files
-  .filter((f: any) => f.name.endsWith(".md"))
-  .map((f: any) => ({
-    slug: f.name.replace(".md", "")
-  }));
+try {
+  const res = await fetch(
+    `https://api.github.com/repos/${repo}/contents/src/content/posts`,
+    {
+      headers: {
+        Accept: "application/vnd.github+json",
+      },
+    }
+  );
+
+  const data = await res.json();
+
+  // ✅ 防炸关键
+  if (!Array.isArray(data)) {
+    console.error("GitHub API error:", data);
+    posts = [];
+  } else {
+    posts = data
+      .filter((f: any) => f.name?.endsWith(".md"))
+      .map((f: any) => ({
+        slug: f.name.replace(".md", "")
+      }));
+  }
+} catch (e) {
+  console.error("GitHub fetch failed:", e);
+  posts = [];
+}
+
 ---
 
 <h1>Blog</h1>
 
 <ul>
-  {posts.map(post => (
+  {posts.map(p => (
     <li>
-      <a href={`/blog/${post.slug}`}>{post.slug}</a>
+      <a href={`/blog/${p.slug}`}>{p.slug}</a>
     </li>
   ))}
 </ul>
