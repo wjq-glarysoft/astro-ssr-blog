@@ -1,6 +1,6 @@
 ---
-import { marked } from "marked";
 import { fetchPost } from "../../lib/github";
+import { toHTML } from "../../lib/markdown";
 
 const { slug } = Astro.params;
 
@@ -8,24 +8,28 @@ if (!slug) {
   return new Response("Not Found", { status: 404 });
 }
 
-let md = await fetchPost(slug);
+let html = "";
 
 try {
-  md = await fetchPost(slug);
-} catch (e) {
-  return new Response("Not Found", { status: 404 });
-}
+  const md = await fetchPost(slug);
 
-const html = marked.parse(md);
+  if (!md) {
+    throw new Error("Empty markdown");
+  }
+
+  html = toHTML(md);
+} catch (e) {
+  console.error("Blog render error:", e);
+
+  return new Response("Post Not Found", {
+    status: 404
+  });
+}
 ---
 
-<html lang="zh">
+<html>
   <head>
     <title>{slug}</title>
-    <meta name="description" content={`文章：${slug}`} />
-
-    <!-- SEO基础 -->
-    <meta property="og:title" content={slug} />
   </head>
 
   <body>
