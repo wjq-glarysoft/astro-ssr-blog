@@ -1,17 +1,19 @@
-# public/admin/config.yml
 backend:
-  name: git-gateway
-  branch: main
+  name: github
+  repo: wjq-glarysoft/astro-ssr-blog
+  branch: master
+  site_domain: localhost:4321
+  base_url: http://localhost:4321
+  auth_endpoint: oauth
 
-media_folder: "public/img"
-public_folder: "/img"
+media_folder: src/assets/img
+public_folder: src/assets/img
 
 collections:
-  - name: "posts"
-    label: "Blog Posts"
+  - name: "post"
+    label: "Posts"
     folder: "src/content/posts"
     create: true
-    slug: "{{slug}}"
     fields:
       - { label: "Title", name: "title", widget: "string", required: true }
       - { label: "Slug", name: "slug", widget: "string", required: true }
