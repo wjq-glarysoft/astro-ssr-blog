@@ -1,12 +1,14 @@
 import { defineConfig, envField } from "astro/config";
+import cloudflare from "@astrojs/cloudflare"; // 导入适配器
 
 export default defineConfig({
-  output: "static",
+  output: "server", // 必须改为 "server" 或 "hybrid"
+  adapter: cloudflare(), // 添加适配器配置
   site: "https://astro-ssr-blog.1003056522.workers.dev",
-	env: {
-		schema: {
-			OAUTH_GITHUB_CLIENT_ID: envField.string({ context: "server", access: "secret" }),
-			OAUTH_GITHUB_CLIENT_SECRET: envField.string({ context: "server", access: "secret" }),
-		},
-	}
+  env: {
+    schema: {
+      OAUTH_GITHUB_CLIENT_ID: envField.string({ context: "server", access: "secret" }),
+      OAUTH_GITHUB_CLIENT_SECRET: envField.string({ context: "server", access: "secret" }),
+    },
+  }
 });
