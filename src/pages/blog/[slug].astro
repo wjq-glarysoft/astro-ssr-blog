@@ -1,38 +1,37 @@
 ---
-import { fetchPost } from "../../lib/github";
-import { toHTML } from "../../lib/markdown";
+// src/pages/blog/[slug].astro
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 
-const { slug } = Astro.params;
-
-if (!slug) {
-  return new Response("Not Found", { status: 404 });
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  
+  return posts.map((post) => ({
+    params: { 
+      slug: post.data.slug || post.id.replace(/^\d{4}-\d{2}-\d{2}-/, '') 
+    },
+    props: { post },
+  }));
 }
 
-let html = "";
+type Props = {
+  post: CollectionEntry<'posts'>;
+};
 
-try {
-  const md = await fetchPost(slug);
+const { post } = Astro.props as Props;
 
-  if (!md) {
-    throw new Error("Empty markdown");
-  }
-
-  html = toHTML(md);
-} catch (e) {
-  console.error("Blog render error:", e);
-
-  return new Response("Post Not Found", {
-    status: 404
-  });
-}
+// 如果直接使用 post.body，它包含原始 Markdown 内容
+// 但你需要设置 `render()` 函数来渲染它
 ---
-
 <html>
   <head>
-    <title>{slug}</title>
+    <title>{post.data.title}</title>
   </head>
-
   <body>
-    <article set:html={html} />
+    <h1>{post.data.title}</h1>
+    <article>
+      <!-- 直接渲染原始内容（不会处理 Markdown） -->
+      <div>{post.body}</div>
+    </article>
   </body>
 </html>
