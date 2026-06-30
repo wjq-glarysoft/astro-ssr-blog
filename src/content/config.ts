@@ -8,7 +8,7 @@ import { glob, file } from 'astro/loaders';
 import { z } from 'astro/zod';
 
 // 4. 为每个集合定义一个 `loader` 和 `schema`
-const posts = defineCollection({
+const blog = defineCollection({
   loader: glob({ base: './src/content/posts', pattern: '**/*.{md,mdx}' }),
   schema: z.object({
     title: z.string(),
@@ -22,4 +22,4 @@ const posts = defineCollection({
 });
 
 // 5. 导出一个 `collections` 对象来注册你的集合
-export const collections = { posts };
+export const collections = { blog };

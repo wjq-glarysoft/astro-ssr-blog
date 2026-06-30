@@ -3,7 +3,9 @@ import cloudflare from "@astrojs/cloudflare"; // 导入适配器
 
 export default defineConfig({
   output: "server", // 必须改为 "server" 或 "hybrid"
-  adapter: cloudflare(), // 添加适配器配置
+  adapter: cloudflare({
+    mode: 'directory', // 改为 directory 模式
+  }),
   site: "https://astro-ssr-blog.1003056522.workers.dev",
   env: {
     schema: {
