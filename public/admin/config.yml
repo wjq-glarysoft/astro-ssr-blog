@@ -1,72 +1,17 @@
-# 后端配置：连接到你的 GitHub 仓库
+# public/admin/config.yml
 backend:
   name: github
   repo: wjq-glarysoft/astro-ssr-blog  # 请替换为实际值
   branch: master
 
-# 本地开发时，可注释掉 backend，改用 local_backend 进行预览
-# local_backend: true
+media_folder: "public/img"
+public_folder: "/img"
 
-# 媒体文件存放配置
-media_folder: "public/img"    # 图片上传后保存的路径
-public_folder: "/img"         # 在 Markdown 中引用图片的 URL 前缀
-
-# 内容集合配置
 collections:
-  - name: "post"                          # 集合唯一标识
-    label: "Posts"                   # 后台显示名称
-    folder: "src/content/posts"            # 文章存放目录（与你的路径一致）
-    create: true                          # 允许在 CMS 中创建新文章
-    slug: "{{slug}}"                      # 新文件的命名格式：直接使用 slug 字段
-    identifier_field: slug                # 用 slug 作为文章的唯一标识
-    extension: md                         # 文件扩展名
-    format: frontmatter                   # 使用 frontmatter 格式（--- 包围的 YAML）
-
-    # 编辑器视图配置
-    editor:
-      preview: true                       # 启用实时预览
-      frame: true                         # 在 iframe 中渲染预览（推荐）
-
-    # 文章字段映射
+  - name: "blog"
+    label: "Blog Posts"
+    folder: "src/content/blog"
+    create: true
     fields:
-      - label: "Title"                    # 显示名称
-        name: "title"                     # 字段名，对应 frontmatter 中的 title
-        widget: "string"                  # 字段类型
-        required: true
-        default: ""
-
-      - label: "Slug"
-        name: "slug"
-        widget: "string"
-        required: true
-        hint: "URL 友好的标识符，如 'free-up-disk-space'"
-        pattern: ["^[a-z0-9]+(?:-[a-z0-9]+)*$", "只能使用小写字母、数字和连字符"]
-
-      - label: "Publish Date"
-        name: "date"                      # 对应示例中的 date 字段
-        widget: "datetime"
-        required: true
-        date_format: "YYYY-MM-DD"         # 存储格式
-        time_format: false                # 不需要时间
-        format: "YYYY-MM-DD"              # 最终保存的格式
-
-      - label: "Categories"
-        name: "categories"                # 对应示例中的 categories（数组）
-        widget: "list"                    # 列表类型
-        allow_add: true
-        field: 
-          label: "Category"
-          name: "category"
-          widget: "string"
-        default: ["optimize-improve"]     # 可设置默认值
-
-      - label: "Author"
-        name: "author"                    # 对应示例中的 author
-        widget: "string"
-        required: false
-        default: "antonia"
-
-      - label: "Body"
-        name: "body"                      # 文章主体内容
-        widget: "markdown"                # 使用 Markdown 编辑器
-        required: true
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Body", name: "body", widget: "markdown" }
