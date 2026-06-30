@@ -1,17 +1,22 @@
 # public/admin/config.yml
 backend:
-  name: github
-  repo: wjq-glarysoft/astro-ssr-blog  # 请替换为实际值
-  branch: master
+  name: git-gateway
+  branch: main
 
 media_folder: "public/img"
 public_folder: "/img"
 
 collections:
-  - name: "blog"
+  - name: "posts"
     label: "Blog Posts"
-    folder: "src/content/blog"
+    folder: "src/content/posts"
     create: true
+    slug: "{{slug}}"
     fields:
-      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Title", name: "title", widget: "string", required: true }
+      - { label: "Slug", name: "slug", widget: "string", required: true }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Description", name: "description", widget: "text", required: false }
+      - { label: "Author", name: "author", widget: "string", required: false }
+      - { label: "Categories", name: "categories", widget: "list", field: { label: "Category", name: "category", widget: "string" } }
       - { label: "Body", name: "body", widget: "markdown" }
