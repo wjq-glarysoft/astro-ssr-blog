@@ -1,2 +1,9 @@
 name = "astro-ssr-blog"
 compatibility_date = "2026-06-28"
+
+# 指定 Worker 入口文件（由 Astro 构建生成）
+main = "dist/_worker.js"
+
+# 指定静态资源目录
+[assets]
+directory = "./dist"
