@@ -1,6 +1,10 @@
-import { SITE } from "@config";
 import { defineCollection, z } from "astro:content";
-
+export const SITE = {
+  author: "antonia",
+  title: "我的博客",
+  description: "这是我的博客",
+  // ... 其他站点配置
+};
 const blog = defineCollection({
   type: "content",
   schema: ({ image }) =>
