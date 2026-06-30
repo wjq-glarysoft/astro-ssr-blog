@@ -5,10 +5,9 @@ import type { CollectionEntry } from 'astro:content';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
-  
   return posts.map((post) => ({
     params: { 
-      slug: post.data.slug || post.id.replace(/^\d{4}-\d{2}-\d{2}-/, '') 
+      slug: post.data.slug
     },
     props: { post },
   }));
@@ -19,7 +18,7 @@ type Props = {
 };
 
 const { post } = Astro.props as Props;
-
+console.log(post.body);
 // 如果直接使用 post.body，它包含原始 Markdown 内容
 // 但你需要设置 `render()` 函数来渲染它
 ---

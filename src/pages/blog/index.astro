@@ -1,48 +1,29 @@
 ---
-const repo = "wjq-glarysoft/astro-ssr-blog";
+// src/pages/blog/index.astro
+import { getCollection } from 'astro:content';
 
-type Post = {
-  slug: string;
-};
+// ✅ 从本地内容集合获取所有文章
+const allPosts = await getCollection('posts');
 
-let posts: Post[] = [];
-
-try {
-  const res = await fetch(
-    `https://api.github.com/repos/${repo}/contents/src/content/posts`,
-    {
-      headers: {
-        Accept: "application/vnd.github+json",
-      },
-    }
-  );
-
-  const data = await res.json();
-
-  // ✅ 防炸关键
-  if (!Array.isArray(data)) {
-    console.error("GitHub API error:", data);
-    posts = [];
-  } else {
-    posts = data
-      .filter((f: any) => f.name?.endsWith(".md"))
-      .map((f: any) => ({
-        slug: f.name.replace(".md", "")
-      }));
-  }
-} catch (e) {
-  console.error("GitHub fetch failed:", e);
-  posts = [];
-}
-
+// 按日期排序（最新的在前）
+const posts = allPosts.sort((a, b) => 
+  b.data.date.valueOf() - a.data.date.valueOf()
+);
 ---
 
 <h1>Blog</h1>
 
 <ul>
-  {posts.map(p => (
-    <li>
-      <a href={`/blog/${p.slug}`}>{p.slug}</a>
-    </li>
-  ))}
+  {posts.map(post => {
+    // 生成与 [slug].astro 一致的 slug
+    const slug = post.data.slug || post.id.replace(/^\d{4}-\d{2}-\d{2}-/, '');
+    return (
+      <li>
+        <a href={`/blog/${slug}`}>
+          {post.data.title}
+          <small> ({post.data.date.toLocaleDateString()})</small>
+        </a>
+      </li>
+    );
+  })}
 </ul>
