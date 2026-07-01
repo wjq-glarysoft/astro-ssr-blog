@@ -9,7 +9,7 @@ import { z } from 'astro/zod';
 
 // 4. 为每个集合定义一个 `loader` 和 `schema`
 const blog = defineCollection({
-  loader: glob({ base: './src/content/posts', pattern: '**/*.{md,mdx}' }),
+  loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdx}' }),
   schema: z.object({
     title: z.string(),
     description: z.string().optional(),
