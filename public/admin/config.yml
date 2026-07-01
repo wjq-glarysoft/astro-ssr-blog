@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: wjq-glarysoft/astro-ssr-blog
+  repo: wjq-glarysoft/astro-decap-starter-ssr
   branch: master
   site_domain: astro-ssr-blog.1003056522.workers.dev
   base_url: https://astro-ssr-blog.1003056522.workers.dev
